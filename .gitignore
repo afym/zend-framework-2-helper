@@ -1,0 +1,7 @@
+# Ignorando archivos de IDES y otros
+nbproject/
+.classpath
+.project
+bin/
+.settings/
+.zfproject.xml
