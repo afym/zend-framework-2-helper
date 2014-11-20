@@ -5,3 +5,4 @@ nbproject/
 bin/
 .settings/
 .zfproject.xml
+.composer.lock
