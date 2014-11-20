@@ -1,0 +1,93 @@
+<h1>Service Manager :</h1>
+
+<p>El componente ServiceManager está basado en el patrón de diseño Service Locator</p>
+
+<h4>Patrón de diseño Service Locator</h4>
+
+<p style="text-align: justify">
+    Patrón diseño usado en el desarrollo de software para encapsular el proceso que 
+    envuelve la obtenciób de servicios (clases) con una fuerte capa de abstracción. Este patrón
+    es un registro central conocido como localizador de servicios (service locator) que ante una
+    petición retorna la información necesaria para realizar un determinada tarea.
+</p>
+
+<p style="text-align: justify">
+    Basicamente el patrón service locator está estructurado por dos componentes los cuales son :
+
+<ol>
+    <li>Una interface que puede ser llamada ServiceLocatorInterface</li>
+    <li>Una clase que hereda dicha interface que puede llamarse ServiceLocator </li>
+</ol>
+</p>
+
+<p>
+    Para ver el ServiceManager
+</p>
+
+<br>
+<h6 class="text-info">Interface ServiceLocatorInterface</h6>
+<pre>
+    <code class="php">
+    &lt;?php
+        namespace Util;
+
+        interface ServiceLocatorInterface
+        {
+            public function set($name, $service);
+            public function get($name);
+            public function has($name);
+            public function remove($name);
+            public function clear();
+        }
+        </code>
+</pre>
+<br>
+
+<h6 class="text-info">Class ServiceLocator</h6>
+<pre>
+    <code class="php">
+        &lt;?php
+            namespace Util;
+
+            class ServiceLocator implements ServiceLocatorInterface
+            {
+                protected $services = array();
+
+                public function set($name, $service) {
+                    if (!is_object($service)) {
+                         throw new Exceptio("Only objects can be registered with the locator.");
+                    }
+
+                    if (!in_array($service, $this->services, true)) {
+                        $this->services[$name] = $service;
+                    }
+
+                    return $this;
+                }
+
+                public function get($name) {
+                    if (!isset($this->services[$name])) {
+                        throw new Exception("The service $name has not been registered with the locator.");
+                    }
+
+                    return $this->services[$name];
+                }
+
+                public function has($name) {
+                    return isset($this->services[$name]);
+                }
+
+                public function remove($name) {
+                    if (isset($this->services[$name])) {
+                        unset($this->services[$name]);
+                    }
+                    return $this;
+                }
+
+                public function clear() {
+                    $this->services = array();
+                    return $this;
+                }
+            }
+</code>
+</pre>
