@@ -1,0 +1,13 @@
+<h1>Uso básico de ServiceManager</h1>
+<pre>
+<code class="php">
+    $sm = new \Zend\ServiceManager\ServiceManager();
+    $sm->setService('array', new \ArrayObject());
+    $array = $sm->get('array');
+</code>
+</pre>
+<hr>
+<h6>El valor de array es : </h6>
+<?php Zend\Debug\Debug::dump($this->array) ?>
+<br>
+<a href="/application/service-manager/implementation">Volver atrás</a>
