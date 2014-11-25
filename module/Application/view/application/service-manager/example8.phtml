@@ -1,0 +1,73 @@
+<h1>Uso básico de ServiceManager</h1>
+<pre>
+<code class="php">
+    class Color {
+
+        private $name;
+
+        public function __construct($name) {
+            $this->name = $name;
+        }
+
+        public function getName() {
+            return $this->name;
+        }
+
+        public function setName($name) {
+            $this->name = $name;
+        }
+
+    }
+</code>
+<code class="php">
+    use Zend\ServiceManager\AbstractFactoryInterface;
+    use Zend\ServiceManager\ServiceLocatorInterface;
+
+    class ObjectAbstracFactory implements AbstractFactoryInterface {
+
+        private $log = array();
+        private $colors = array('green', 'red', 'blue');
+
+        public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName) {
+            $this->log['can-create-service-with-name--name'] = $name;
+            $this->log['can-create-service-with-name--requested-name'] = $requestedName;
+            $this->log['can-create-service-with-name--isset-object-service'] = isset($serviceLocator->get('object-service'));
+
+            return in_array($requestedName, $this->colors);
+        }
+
+        public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName) {
+            $this->log['createService-with-name--name'] = $name;
+            $this->log['createService-with-name--requested-name'] = $requestedName;
+            $this->log['createService-with-name--isset-object-service'] = isset($serviceLocator->get('object-service'));
+
+            return new Color($requestedName);
+        }
+
+        public function getLog() {
+            return $this->log;
+        }
+
+    }
+</code>
+<code class="php">
+    $sm = new \Zend\ServiceManager\ServiceManager();
+    $abastractFactory = new ObjectAbstractFactory();
+    $sm->addAbstractFactory($abastractFactory);
+    $sm->setService('object-service', new Object());
+
+    return array(
+        'green' => is_object($sm->get('green')),
+        'red' => is_object($sm->get('red')),
+        'blue' => is_object($sm->get('blue')),
+        'log' => $abastractFactory->getLog()
+    );
+</code>
+</pre>
+<hr>
+<h6>El valor de array es : </h6>
+<?php Zend\Debug\Debug::dump($this->array) ?>
+<p class="text-warning">Observamos que la instancia que se almacena en el ServiceManager es la misma para todo el proceso</p>
+<p class="text-danger">El registro por setService <strong>no</strong> permite shared (restringuir el modo para compartir)</p>
+<br>
+<a href="/application/service-manager/implementation">Volver atrás</a>

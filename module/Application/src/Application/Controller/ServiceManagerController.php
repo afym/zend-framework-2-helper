@@ -42,5 +42,39 @@ class ServiceManagerController extends AbstractActionController {
         return $response;
     }
 
-    public function example4Action() {}
+    public function example4Action() {
+        $response = new ViewModel();
+        $response->setVariable('array', $this->exampleOne->example4());
+        return $response;
+    }
+
+    public function example5Action() {
+        $response = new ViewModel();
+        $factories = $this->exampleOne->example5();
+
+        $response->setVariable('object1', $factories['object-1']);
+        $response->setVariable('object2', $factories['object-2']);
+        $response->setVariable('object3', $factories['object-3']);
+
+        return $response;
+    }
+
+    public function example6Action() {
+        $response = new ViewModel();
+        $response->setVariable('array', $this->exampleOne->example6());
+        return $response;
+    }
+
+    public function example7Action() {
+        $response = new ViewModel();
+        $response->setVariable('array', $this->exampleOne->example7());
+        return $response;
+    }
+
+    public function example8Action() {
+        $response = new ViewModel();
+        $response->setVariable('array', $this->exampleOne->example8());
+        return $response;
+    }
+
 }

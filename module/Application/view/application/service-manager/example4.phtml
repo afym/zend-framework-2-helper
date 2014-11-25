@@ -1,0 +1,45 @@
+<h1>Uso básico de ServiceManager</h1>
+<pre>
+<code class="php">
+    class Object {
+
+        private $id;
+
+        public function __construct() {
+            $this->id = 100;
+        }
+
+        public function setId($id) {
+            $this->id = $id;
+        }
+
+        public function getId() {
+            return $this->id;
+        }
+
+    }
+</code>
+<code class="php">
+    $sm = new \Zend\ServiceManager\ServiceManager();
+    $sm->setInvokableClass('invokable-object', 'Application\ServiceManager\Object');
+    $response = array('before' => 0, 'after' => 0);
+
+    // Getting invokable object
+    $object1 = $sm->get('invokable-object');
+    $response['before'] = $object1->getId();
+    $object1->setId(200);
+    // Getting invokable object
+    $object2 = $sm->get('invokable-object');
+    $response['after'] = $object2->getId();
+
+    return $response;
+</code>
+</pre>
+<hr>
+<h6>El valor de array es : </h6>
+<?php Zend\Debug\Debug::dump($this->array) ?>
+<p class="text-warning">Observamos que la instancia que se almacena en el ServiceManager por medio de una clase Invokable es la misma para todo el proceso</p>
+<p class="text-danger">Si ponemos $sm->setInvokableClass('invokable-object', 'Application\ServiceManager\Object', <strong>false</strong>); la instancia no será la misma. El tercer
+parámetro es share (compartido)</p>
+<br>
+<a href="/application/service-manager/implementation">Volver atrás</a>

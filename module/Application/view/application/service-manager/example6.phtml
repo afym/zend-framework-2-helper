@@ -1,0 +1,45 @@
+<h1>Uso básico de ServiceManager</h1>
+<pre>
+<code class="php">
+    class Object {
+
+        private $id;
+
+        public function __construct() {
+            $this->id = 100;
+        }
+
+        public function setId($id) {
+            $this->id = $id;
+        }
+
+        public function getId() {
+            return $this->id;
+        }
+
+    }
+</code>
+<code class="php">
+    $sm = new \Zend\ServiceManager\ServiceManager();
+    $sm->setFactory('object-factory', function(){
+        return new Object();
+    });
+
+    $response = array('before' => 0, 'after' => 0);
+    // Getting factory object
+    $object1 = $sm->get('object-factory');
+    $response['before'] = $object1->getId();
+    $object1->setId(450);
+    // Getting factory object
+    $object2 = $sm->get('object-factory');
+    $response['after'] = $object2->getId();
+
+    return $response;
+</code>
+</pre>
+<hr>
+<h6>El valor de array es : </h6>
+<?php Zend\Debug\Debug::dump($this->array) ?>
+<p class="text-warning">Observamos que la instancia que se almacena en el ServiceManager por medio de una clase factory es diferente</p>
+<br>
+<a href="/application/service-manager/implementation">Volver atrás</a>

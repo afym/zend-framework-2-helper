@@ -1,0 +1,56 @@
+<h1>Uso básico de ServiceManager</h1>
+<pre>
+<code class="php">
+    class Object {
+
+        private $id;
+
+        public function __construct() {
+            $this->id = 100;
+        }
+
+        public function setId($id) {
+            $this->id = $id;
+        }
+
+        public function getId() {
+            return $this->id;
+        }
+
+    }
+</code>
+<code class="php">
+    use Zend\ServiceManager\FactoryInterface;
+    use Zend\ServiceManager\ServiceLocatorInterface;
+
+    class ObjectFactory implements FactoryInterface {
+
+        public function createService(ServiceLocatorInterface $serviceLocator) {
+            return new Object();
+        }
+    }
+</code>
+<code class="php">
+    $sm = new \Zend\ServiceManager\ServiceManager();
+    $sm->setFactory('object-factory-1', 'Application\ServiceManager\ObjectFactory');
+    $sm->setFactory('object-factory-2', function() {
+        return new Object();
+    });
+
+    $sm->setFactory('object-factory-3', new ObjectFactory());
+
+    $response = array(
+        'object-1' => $sm->get('object-factory-1'),
+        'object-2' => $sm->get('object-factory-2'),
+        'object-3' => $sm->get('object-factory-3'),
+    );
+</code>
+</pre>
+<hr>
+<h6>El valor de la variable es : </h6>
+<?php Zend\Debug\Debug::dump($this->object1, '<h6>Object 1</h6>') ?>
+<?php Zend\Debug\Debug::dump($this->object2, '<h6>Object 2</h6>') ?>
+<?php Zend\Debug\Debug::dump($this->object3, '<h6>Object 3</h6>') ?>
+<p class="text-warning">Observamos que registramos las instancias de tres maneras distintas</p>
+<br>
+<a href="/application/service-manager/implementation">Volver atrás</a>
